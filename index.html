@@ -3,61 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日惊喜</title>
+    <title>魔法生日惊喜</title>
     <style>
         body {
             background-color: #f6d1e1;
             font-family: 'Arial', sans-serif;
             text-align: center;
             color: #6b4f5f;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         h1 {
             margin-top: 50px;
             font-size: 3em;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.1);
         }
-        .cake {
-            width: 300px;
-            margin-top: 30px;
-            transition: transform 0.5s ease;
+
+        /* 蛋糕容器 */
+        .cake-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 30px 0;
         }
-        .cake:hover {
-            transform: scale(1.1);
+
+        /* 优化蛋糕造型 */
+        .animated-cake {
+            position: absolute;
+            width: 140px;
+            height: 90px; /* 降低蛋糕高度 */
+            background: #ffb3d9;
+            border-radius: 15px 15px 5px 5px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 2s ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        /* 蜡烛优化定位 */
+        .candle-group {
+            position: absolute;
+            bottom: 90px; /* 调整定位 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .candle {
+            width: 10px;
+            height: 40px; /* 缩短蜡烛高度 */
+            background: linear-gradient(to right, #fff 0%, #ffe6f2 100%);
+            border-radius: 3px;
+            position: relative;
+            box-shadow: 0 -3px 0 rgba(0,0,0,0.1) inset;
+        }
+
+        .flame {
+            width: 16px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffdd66 0%, #ff9900 100%);
+            border-radius: 50% 50% 35% 35%;
+            position: absolute;
+            top: -24px; /* 调整火焰位置 */
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flamme 1.2s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 155, 231, 0.3);
+            z-index: 1000;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translate(-50%, -40%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* 烟花粒子 */
+        .firework {
+            position: absolute;
+            pointer-events: none;
+            animation: firework 1s ease-out infinite;
+        }
+
         .button {
-            background-color: #ff9be3;
+            background: linear-gradient(45deg, #ff9be3, #ff6bd6);
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 1.2em;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 25px;
             margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            color: white;
         }
-        .message {
-            margin-top: 20px;
-            font-size: 1.5em;
+
+        /* 动画定义 */
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
-        .footer {
-            margin-top: 40px;
-            font-size: 1.2em;
-            color: #9b5a5a;
+
+        @keyframes flamme {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(0.9, 1.2); }
+        }
+
+        @keyframes firework {
+            0% { opacity: 1; transform: scale(0); }
+            100% { opacity: 0; transform: scale(2); }
         }
     </style>
 </head>
 <body>
-    <h1>生日快乐！🎉</h1>
-    <img src="https://github.com/Esther6v6/birthday-surprise/blob/main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250223124334.jpg?raw=true" alt="生日蛋糕" class="cake" id="cakeImage">
-    <p class="message">阿姨生日快乐哦(●'◡'●)！希望你的每一天都像这份蛋糕一样笑嘻嘻！</p>
-    <button class="button" onclick="surprise()">点击打开惊喜</button>
+    <h1>阿姨生日快乐( •̀ ω •́ )✧！🎉</h1>
+    
+    <!-- 蛋糕结构 -->
+    <div class="cake-container">
+        <div class="animated-cake"></div>
+        <div class="candle-group">
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+        </div>
+    </div>
 
-    <div class="footer">
-        <p>祝你度过一个充满快乐和温暖的一年！🎂</p>
+    <p class="message">✨ 轻轻点击按钮，召唤生日魔法 ✨</p>
+    <button class="button" onclick="startMagic()">🎂 点燃祝福</button>
+
+    <!-- 生日弹窗 -->
+    <div id="birthdayModal" class="modal">
+        <h3 style="margin:0 0 15px 0;">✨ 魔法生效！</h3>
+        <p>愿所有美好都如期而至～ 🎂</p>
+        <p style="font-size:0.9em; color:#ff6b6b;">（蛋糕会在下午茶时间4:20准时到达哦）</p>
+        <button onclick="closeModal()" style="
+            background: #ff9be3;
+            border: none;
+            padding: 8px 20px;
+            margin-top: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            color: white;
+        ">关闭</button>
     </div>
 
     <script>
-        function surprise() {
-            alert("蛋糕会在今天下午4点20左右送到哦(●ˇ∀ˇ●)！许下你的生日愿望吧！🎂🎈");
-            document.getElementById("cakeImage").style.transform = "scale(1.2)";
-            document.querySelector(".message").innerText = "许下愿望吧，生日快乐！🌟";
+        // 烟花生成函数
+        function createFirework(x, y) {
+            const colors = ['#ff3366', '#ffdd66', '#66ffcc', '#ff9966'];
+            const container = document.body;
+            
+            for (let i = 0; i < 36; i++) {
+                const particle = document.createElement('div');
+                const angle = (i * 10) * Math.PI / 180;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.className = 'firework';
+                particle.style.cssText = `
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: ${Math.random()*6+4}px;
+                    height: ${Math.random()*6+4}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    animation-delay: ${Math.random()*0.3}s;
+                    transform: translate(
+                        ${Math.cos(angle) * 150}px, 
+                        ${Math.sin(angle) * 150}px
+                    );
+                `;
+                
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // 显示弹窗
+        function showModal() {
+            document.getElementById('birthdayModal').style.display = 'block';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('birthdayModal').style.display = 'none';
+        }
+
+        // 主功能
+        function startMagic() {
+            // 蛋糕跳动效果
+            const cake = document.querySelector('.animated-cake');
+            cake.style.transform = cake.style.transform + ' scale(1.05)';
+            setTimeout(() => cake.style.transform = cake.style.transform.replace(' scale(1.05)', ''), 300);
+
+            // 生成烟花
+            const rect = document.querySelector('.candle-group').getBoundingClientRect();
+            createFirework(rect.left + rect.width/2, rect.top);
+
+            // 显示弹窗
+            showModal();
+
+            // 持续烟花效果
+            setInterval(() => {
+                createFirework(
+                    rect.left + rect.width/2 + Math.random()*50 -25,
+                    rect.top + Math.random()*30 -15
+                );
+            }, 800);
         }
     </script>
 </body>
