@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日惊喜</title>
+    <style>
+        body {
+            background-color: #f6d1e1;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #6b4f5f;
+        }
+        h1 {
+            margin-top: 50px;
+            font-size: 3em;
+        }
+        .cake {
+            width: 300px;
+            margin-top: 30px;
+            transition: transform 0.5s ease;
+        }
+        .cake:hover {
+            transform: scale(1.1);
+        }
+        .button {
+            background-color: #ff9be3;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 1.2em;
+            color: #9b5a5a;
+        }
+    </style>
+</head>
+<body>
+    <h1>生日快乐！🎉</h1><img src="https://i.imgur.com/ZRYb8BE.jpeg" alt="生日蛋糕" class="cake" id="cakeImage">
+    <p class="message">阿姨生日快乐哦(●'◡'●)！希望你的每一天都像这份蛋糕一样笑嘻嘻！</p>
+    <button class="button" onclick="surprise()">点击打开惊喜</button>
+
+    <div class="footer">
+        <p>祝你度过一个充满快乐和温暖的一年！🎂</p>
+    </div>
+
+    <script>
+        function surprise() {
+            alert("蛋糕会在今天下午4点20左右送到哦(●ˇ∀ˇ●)！许下你的生日愿望吧！🎂🎈");
+            document.getElementById("cakeImage").style.transform = "scale(1.2)";
+            document.querySelector(".message").innerText = "许下愿望吧，生日快乐！🌟";
+        }
+    </script>
+</body>
+</html>
